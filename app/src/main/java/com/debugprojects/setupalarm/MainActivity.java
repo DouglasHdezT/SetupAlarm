@@ -1,6 +1,7 @@
 package com.debugprojects.setupalarm;
 
 import android.content.Intent;
+import android.os.Build;
 import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int minutes_var = 0;
     private int hours_var = 0;
-    private String comment_var;
-    private boolean vabrator_var;
+    private String comment_var="";
+    private boolean vabrator_var= false;
 
     //Metodo onCreate
     @Override
@@ -33,16 +34,23 @@ public class MainActivity extends AppCompatActivity {
 
         getAllViews();
 
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+            radioButtonVibrator.setChecked(false);
+            radioButtonVibrator.setEnabled(false);
+        }
+
         buttonProgramar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                comment_var = editTextComment.getText().toString();
 
-                if(editTextHours.getText().toString() != ""){
+                if (!editTextComment.getText().toString().matches("")){
+                    comment_var = editTextComment.getText().toString();
+                }
+                if(!editTextHours.getText().toString().matches("")){
                     hours_var = Integer.parseInt(editTextHours.getText().toString());
                 }
 
-                if(editTextMinutes.getText().toString() != ""){
+                if(!editTextMinutes.getText().toString().matches("")){
                     minutes_var = Integer.parseInt(editTextMinutes.getText().toString());
                 }
 
@@ -71,8 +79,11 @@ public class MainActivity extends AppCompatActivity {
         alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
         alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
         alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
-        alarmIntent.putExtra(AlarmClock.EXTRA_VIBRATE, vibrator);
         alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, comment);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            alarmIntent.putExtra(AlarmClock.EXTRA_VIBRATE, vibrator);
+        }
 
         if(alarmIntent.resolveActivity(getPackageManager()) != null){
             startActivity(alarmIntent);
