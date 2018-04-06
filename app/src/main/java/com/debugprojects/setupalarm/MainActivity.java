@@ -47,11 +47,21 @@ public class MainActivity extends AppCompatActivity {
                     comment_var = editTextComment.getText().toString();
                 }
                 if(!editTextHours.getText().toString().matches("")){
-                    hours_var = Integer.parseInt(editTextHours.getText().toString());
+
+                    if(Integer.parseInt(editTextHours.getText().toString()) <0 || Integer.parseInt(editTextHours.getText().toString())> 23){
+                        hours_var = 0;
+                    }else{
+                        hours_var = Integer.parseInt(editTextHours.getText().toString());
+                    }
                 }
 
                 if(!editTextMinutes.getText().toString().matches("")){
-                    minutes_var = Integer.parseInt(editTextMinutes.getText().toString());
+
+                    if(Integer.parseInt(editTextMinutes.getText().toString()) < 0 || Integer.parseInt(editTextMinutes.getText().toString()) > 60){
+                        minutes_var = 0;
+                    }else{
+                        minutes_var = Integer.parseInt(editTextMinutes.getText().toString());
+                    }
                 }
 
                 vabrator_var = radioButtonVibrator.isChecked();
